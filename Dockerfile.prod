@@ -1,0 +1,15 @@
+FROM golang:1.21rc3-alpine3.18 AS build_base
+
+WORKDIR /home/fullCycle/imagens/golang
+
+COPY . . 
+
+RUN go build -ldflags '-s -w' main.go
+
+FROM scratch
+
+WORKDIR /home/fullCycle/imagens/
+
+COPY --from=build_base /home/fullCycle/imagens/golang .
+
+CMD [ "./main" ]
